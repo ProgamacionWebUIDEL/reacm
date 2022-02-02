@@ -1,7 +1,54 @@
-import React from "react";
-import {Button, Checkbox, Form} from 'semantic-ui-react';
+import React, { useState } from 'react'
+import { Button, Checkbox, Form } from 'semantic-ui-react'
+import axios from 'axios';
+var qs = require('qs');
 
-const Create = () =>(
+export default function Create() {
+    const [nonbre, setnombre] = useState('');
+    const [director, setdirector] = useState('');
+    const [anio_estreno, setanio_estreno] = useState('');
+    const [idioma, setidioma] = useState('');
+    const [Lugar, setlugar] = useState('');
+    const [reparto, setreparto] = useState('');
+    
+    
+    const enviarDatos = () => {
+        console.log(nombre);
+        console.log(director);
+        console.log(anio_estreno);
+        console.log(idioma);
+        console.log(Lugar);
+        console.log(reparto);
+
+        
+        var data = qs.stringify({
+            'nombre': nombre,
+            'director': director,
+            'anio_estreno': anio_estreno,
+            'idioma': idioma,
+        });
+        var config = {
+            method: 'post',
+            url: 'https://uide-crud.herokuapp.com/peliculas/crearPelicula',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: data
+        };
+
+        axios(config)
+            .then(function (response) {
+                window.alert("pelicula guardada")
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                window.alert("ocurrio un error")
+                console.log(error);
+            });
+
+    }
+    return (
+
 <Form>
     <Form.Field>
       <label>Nombre de la pelicula</label>
@@ -46,4 +93,4 @@ const Create = () =>(
 </Form>
 
 )
-export default Create;
+}
